@@ -13,3 +13,4 @@ if __name__ == "__main__":
     except EOFError:
         print("ctrl + D 키가 입력되었습니다.")
         sys.exit(1)
+        

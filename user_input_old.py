@@ -20,29 +20,6 @@ def int_select(explain:str, under:int,uppper:int):
             else:
                 print("숫자를 입력해주세요.")
 
-# 패턴인지 필터인지 확인
-# 몇번째 패턴, 필터인지 확인
-# user_input하는 차원의 수 만큼 one_line_input 반환함
-def pat_fil_input(pat_or_fil:str,sep:str)->list[MAT_SIZE]:
-    print("#","-"*20)
-    if pat_or_fil =="필터":
-        print(f"#[1] [{number}] 필터 입력")
-    else:
-        print(f"#[2] [{number}] 패턴 입력")
-
-    print("#","-"*20)
-
-    print(f"{pat_or_fil} {sep} ({MAT_SIZE}줄 입력, 공백 구분)")
-    
-    matrix = []
-    for i in range(0,MAT_SIZE):
-        row = one_line_input
-        matrix.append(row)
-
-
-    return matrix
-
-
 # explain에는 몇번쨰 행을 입력해주세요. 하고 입력해주자
 def one_line_input(explain:str):
     while True:
@@ -64,3 +41,31 @@ def one_line_input(explain:str):
                 return [int(x) for x in array]
         else:
             print(f"{MAT_SIZE} 개의 숫자를 입력해야 합니다.")
+
+# pattern_input
+def _mat_input(explain:str):
+    n = MAT_SIZE
+    mat = []
+    print(str)
+    for i in range(MAT_SIZE):
+        l = one_line_input(f"{i+1}번째 행을 입력해주세요.")
+        mat.append(l)
+
+    return mat
+
+# pattern은 1과 2가 들어오니까 이를 추상황해서 반복되는 과정을 줄이자.
+# pattern만 있는지 알았는데 filter도 있다. if를 사용해 type을 확인하도록 하자
+# type : pattern 또는 filter
+# mat_input을 추상화 한다고 생각하자.
+
+# mat_input(~)을 이용하여 패턴 또는 필터 1 2를 입력
+# _mat_input(~)에서 one_line_input(~) -> int~~
+def mat_input(type:str,number:int):
+
+    print("=================================")
+    print(f" [{number}] {type} 입력")
+    print("=================================")
+
+    return _mat_input(f"{type} {number} {MAT_SIZE}줄 입력, 공백 구분")
+
+    
