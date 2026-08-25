@@ -1,5 +1,7 @@
-from user_input import int_select,one_line_input,mat_input
+from user_input import int_select,pat_fil_input
 from config import user_input_mat_size
+from mac import mac_2d
+
 
 user_input_mat_size = 3
 
@@ -20,9 +22,22 @@ class Simulation():
         match select:
 
             case 1:
-                one_line_input("숫자 3개 ㄱ")
                 self.menu_1()
 
 
     def menu_1(self):
-        mat_input
+
+        u_filter_A = pat_fil_input("필터","A")
+        u_filter_B = pat_fil_input("필터","B")
+
+        u_pattern = pat_fil_input("패턴")
+
+        print("filter_A")
+        print(u_filter_A)
+
+        print("filter_B")
+        print(u_filter_B)
+
+        print("pattern")
+        print(u_pattern)
+        print("패턴과 필터 MAC연산 결과")
