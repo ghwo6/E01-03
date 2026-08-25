@@ -1,7 +1,31 @@
 EPSILON = 1e-9
 
-
+# 나중에 시간 계산할때 간단하게 mac만 계산하도록 refactoring함
 def mac_2d(mat_a:list[list[float]],mat_b:list[list[float]]):
+    score = 0
+    size = len(mat_a)
+    for i in range(size):
+        for j in range(size):
+            score += mat_a[i][j] * mat_b[i][j]
+    return score
+
+# 유저 인풋에 대한 결과값을 나타내므로 앞에 u_ 를 붙임
+def u_match_filter(pattern:list[list[float]],filter_A:list[list[float]],filter_B:list[list[float]]):
+    u_score_A = mac_2d(pattern,filter_A)
+    u_score_B = mac_2d(pattern,filter_B)
+    print
+    if abs(u_score_A - u_score_B) < EPSILON:
+        return "UNDECIDED"
+    elif u_score_A > u_score_B:
+        return "A"
+    else:
+        return "B"
+
+# 처음에 만든 mac함수
+# 멋대로 2차원의 배열도 mac 계산 가능하게 해놨다.
+# 열의 갯수가 들쭉날쭉한 matrix 아닌것도 가능하도록 구현함
+# 멋대로 추상화한 이상하게 생긴 이상한 함수
+def mac_2d_abstract(mat_a:list[list[float]],mat_b:list[list[float]]):
     score = 0
     if dimension_size_check(mat_a,mat_b):
         # 행을 돈다.
@@ -63,14 +87,3 @@ def dimension_size_check_recur(a,b):
 
         # 모든 차원에 대해서 하위 채널의 열의 개수가 같음
         return True
-
-# 유저 인풋에 대한 결과값을 나타내므로 앞에 u_ 를 붙임
-def u_match_filter(pattern:list[list[float]],filter_A:list[list[float]],filter_B:list[list[float]]):
-    u_score_A = mac_2d(pattern,filter_A)
-    u_score_B = mac_2d(pattern,filter_B)
-    if abs(u_score_A - u_score_B) < EPSILON:
-        return "UNDECIDED"
-    elif u_score_A > u_score_B:
-        return "A"
-    else:
-        return "B"
