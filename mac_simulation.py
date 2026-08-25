@@ -41,3 +41,5 @@ class Simulation():
         print("pattern")
         print(u_pattern)
         print("패턴과 필터 MAC연산 결과")
+        u_match_filter(u_pattern,u_filter_A,u_filter_B)
+        

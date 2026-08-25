@@ -13,13 +13,23 @@ def mac_2d(mat_a:list[list[float]],mat_b:list[list[float]]):
 def u_match_filter(pattern:list[list[float]],filter_A:list[list[float]],filter_B:list[list[float]]):
     u_score_A = mac_2d(pattern,filter_A)
     u_score_B = mac_2d(pattern,filter_B)
-    print
+    result = ""
+    
+    print("#","-"*20)
+    print(f"#[3] MAC 결과 (판정 불가)")
+    print("#","-"*20)
+    print("A 점수: ",u_score_A)
+    print("B 점수: ",u_score_B)
     if abs(u_score_A - u_score_B) < EPSILON:
-        return "UNDECIDED"
-    elif u_score_A > u_score_B:
-        return "A"
+        result = "UNDECIDED"
+        print("판정: 판정 불가 (|A-B| < 1e-9)")
     else:
-        return "B"
+        if u_score_A > u_score_B:
+            result= "A"
+        else:
+            result= "B"
+        print("판정: ",result)
+
 
 # 처음에 만든 mac함수
 # 멋대로 2차원의 배열도 mac 계산 가능하게 해놨다.
