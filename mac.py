@@ -46,9 +46,18 @@ def mac_2d_abstract(mat_a:list[list[float]],mat_b:list[list[float]]):
                 score += mat_a[i][j] * mat_b[i][j]
     return score
 
+    # 애초에 문제가 이차원의 N의 정사각행렬이므로 아래의 코드로 구현함
+def dimension_size_check(array1:list[list],array2:list[list]):
+    if not isinstance(array1,list) or len(array1) == 0:
+        return
+    len_array1 = len(array1)
+    
+    if len(array1) == len(array2) and len(array1[0]) == len(array2[0]):
+        return len_array1
+
 
     # 차원의 수가 같은지 확인하자
-def dimension_size_check(mat_a:list[list[float]],mat_b:list[list[float]]):
+def dimension_size_check_hard(mat_a:list[list[float]],mat_b:list[list[float]]):
 
     # len(mat_a) : 3이면
     # range(0,len(mat_a)) : 0 , 1 , 2
@@ -97,3 +106,4 @@ def dimension_size_check_recur(a,b):
 
         # 모든 차원에 대해서 하위 채널의 열의 개수가 같음
         return True
+        
