@@ -3,7 +3,7 @@ import json,os
 def read_json():
     json_file = os.path.join(os.path.dirname(__file__),"data.json")
     data = {}
-    print(json_file)
+    # print(json_file)
     try:
         with open(json_file,'rt',encoding="utf-8") as f:
             data = json.load(f)
@@ -37,13 +37,19 @@ def read_json():
 
 
 
-# 쓰는 코드가 잘 썻는지 확인하는 코드가 필요하다.
-# 딕셔너리를 만들고 패턴 or 필터, size_n_n과 expected를 가져와 key로 만들고
-# value에 True와 False를 반환하게 하자
-verification_test_dict = {}
 
-#검증된 data를 담는 dict도 필요할거 같음
+# 검증된 data를 담는 dict도 필요할거 같음
+# 검증된 필터와 패턴들은 어떤게 있는지 표시하는 딕셔너리를 반환하는 함수이다.
+
+# filters size_str cross,x
+# patterns size_str +,x
 def verificate(data:dict):
+
+    # 쓰는 코드가 잘 썻는지 확인하는 코드가 필요하다.
+    # 딕셔너리를 만들고 패턴 or 필터, size_n_n과 expected를 가져와 key로 만들고
+    # value에 True와 False를 반환하게 하자
+    verification_test_dict = {}
+
     filter_loadData_dict = {}
     # size - 크기를 넣자
     # + x - 필터 data
@@ -53,8 +59,8 @@ def verificate(data:dict):
     
     print("#","-"*20)
     print("#[1] 필터 로드")
-    print("#","-"*20)
     for size_str,size_dict in data["filters"].items():
+        # k = cross, x
         for k,array in size_dict.items():
             result = _verificate_array_deep(array,size_str)
             if result:
@@ -62,23 +68,17 @@ def verificate(data:dict):
                     filter_loadData_dict[size_str] = {}
                     
                 filter_loadData_dict[size_str][k]= True
-                # filter_loadData_dict[size_str][k] = True
-                # 오류났던 코드
-                # filter_loadData_dict[size_str].append({k:True})
                 verification_test_dict[f"filter {size_str} {k}"] = True
             else:
                 if size_str not in filter_loadData_dict:
                     filter_loadData_dict[size_str] = {}
                 
                 filter_loadData_dict[size_str][k]= True
-                # filter_loadData_dict[size_str][k] = True
-                # 오류났던 코드
-                # filter_loadData_dict[size_str] = {k:True}
-                # filter_loadData_dict[size_str].append({k:True})
                 verification_test_dict[f"filter {size_str} {k}"] = False
 
     for size_str , size_dict in data["patterns"].items():
         array = size_dict.get("input")
+        # k = x, +
         k = size_dict.get("expected")
 
         result = _verificate_array_deep(array,size_str)
@@ -89,13 +89,29 @@ def verificate(data:dict):
     for n in [5,13,25]:
         for k in filter_loadData_dict.keys():
             if int(k.split("_")[1]) == n:
-                # print(filter_loadData_dict[k].keys())
                 print(f"✓ {k} 필터 로드 완료 (", end="")
                 print(*list(filter_loadData_dict[k].keys()),sep=",",end="")
-                # print(*list(filter_loadData_dict[k].keys()),end="")
                 print(")")
     print()
     # print(filter_loadData_dict)
+    return verification_test_dict
+
+# 검증을 한 후에 라벨링을 하느라 verification_test_dict에는 라벨링이 되지 않아 이 부분을 추가함
+def verificated_dict_labelrize(verificate_dict:dict):
+
+    registedList = list(verificate_dict.keys())
+    # registedList를 돌면서 verificate_dict의 key에 있는 cross,x,+를 Cross or X로 바꾸자
+    for k in registedList:
+        original_label = k.split(" ")[2]
+        if original_label in ["cross","+"]:
+            after_label = "Cross"
+        elif original_label == "x":
+            after_label = "X"
+        # after_k 를 이용해서 라벨링된 새로운 key를 할당함
+        after_k = k.split(" ")[0]+ " " + k.split(" ")[1] + " " + after_label
+        verificate_dict[after_k] = verificate_dict.pop(k)
+    return verificate_dict
+
 
 # 패턴과 키에 대해서
 # N의 정사각행렬이 맞는지 확인
@@ -152,9 +168,12 @@ def copy_2d(original:list[list]):
         copied.append(list(row))
     return copied
 
-
+#시험 삼아 잘 출력 되는지 확인해봄
 def test_label_regularize():
     r = read_json()
+    # r = verificate(r)
+    label_regularize(r)
+    print("test입니다. ----- start")
     for k,v in r.items():
         if k == "meta":
             # meta 내부는 dict 형식
@@ -167,6 +186,7 @@ def test_label_regularize():
             for size , pattern_size_dict in r["patterns"].items():
                 print(f"{k},key = {size} value= {pattern_size_dict}",sep="\n",end="\n")
 
+    print("test입니다. ----- end")
 # 각 사이즈 마다 필터와 패턴들을 담자
 # size
 # pattern, filter
@@ -177,9 +197,15 @@ def test_label_regularize():
 
 if __name__ == "__main__":
     r = read_json()
-    r_fix1 = verificate(r)
-    # for k,v in verification_test_dict.items():
-    #     print(f"{k} , {v}")
+    print("read_json")
+    # print(r)
+    dict_verify = verificate(r)
+    print("verificate")
+    print(dict_verify)
+    dict_verify = verificated_dict_labelrize(dict_verify)
+    print("verificated_dict_labelrize")
+    print(dict_verify)
     label_regularize(r)
+    
     # test_label_regularize()
 

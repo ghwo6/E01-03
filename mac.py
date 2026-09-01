@@ -30,6 +30,19 @@ def u_match_filter(pattern:list[list[float]],filter_A:list[list[float]],filter_B
             result= "B"
         print("판정: ",result)
 
+# 메뉴2에서 사용하는 mac함수를 만들었다. - 나중에 메뉴1과 중복되는 코드를 줄이는 방향으로 refactoring 해보자
+
+def mac_2d_in_menu2(pattern:list[list],filter0:list[list],filter1:list[list]):
+    # filters = [filter0,filter1]
+    
+    # score_0 = 0
+    # score_1 = 0
+
+    score_0 = mac_2d(pattern,filter0)
+    score_1 = mac_2d(pattern,filter1)
+    
+    
+
 
 # 처음에 만든 mac함수
 # 멋대로 2차원의 배열도 mac 계산 가능하게 해놨다.
